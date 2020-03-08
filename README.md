@@ -251,3 +251,55 @@ Indica que houve um erro não catalogado. Caso o erro persista, favor
 entrar em contato com a CAS.
 
 
+
+
+
+# Base de conhecimento:
+
+
+
+I have forgotten my Certificate Password, how can I recover it?
+Posted by , Last modified by Adam Zilliax on 20 July 2012 09:17 AM
+A lost certificate password cannot be recovered. However if the certifictate is still in the Certificate Store it can be re-exported with a new Certificate Password.
+
+To re-export the private key and assign a new certificate password to the exported certificate follow the steps below to export a certificate with the private key.
+
+Open the Certificates snap-in for a user, computer, or service.  ( Start> run > certmgr.msc )
+In the console tree under the logical store (Trusted People) that contains the certificate to export, click Certificates.
+In the details pane, click the certificate that you want to export.
+On the Action menu, point to All Tasks, and then click Export.
+In the Certificate Export Wizard, click Yes, export the private key. (This option will appear only if the private key is marked as exportable and you have access to the private key.)
+Under Export File Format, do any of the following, and then click Next.
+
+To include all certificates in the certification path, select the Include all certificates in the certification path if possible check box.
+To delete the private key if the export is successful, select the Delete the private key if the export is successful check box.
+To export the certificate's extended properties, select the Export all extended properties check box.
+In Password, type a password to encrypt the private key you are exporting. In Confirm password, type the same password again, and then click Next.
+In File name, type a file name and path for the PKCS #12 file that will store the exported certificate and private key. Click Next, and then click Finish.
+The exported Certificate can now be imported into Faronics Core to setup a new Core Server.
+
+Remember to document the new password for the certificate to ensure that the new password is not lost.
+
+
+# Comandos:
+
+keytool -list -v -keystore infoconv.jks
+
+keytool -export -alias infoconv -file exportado_jks.crt -keystore infoconv.jks
+
+keytool -genkey -alias infoconv -keyalg RSA -keysize 2048 -dname "C=BR, O=ICP-Brasil, OU=Autoridade Certificadora SERPROACF, OU=SERPRO, OU=Equipamento A1, CN=hom2.comprasnet.gov.br" -keypass 123456 -keystore infoconv2.jks -storepass 123456
+
+keytool -certreq -file exportado_jks.crt -alias infoconv -keypass 123456 -keystore infoconv2.jks
+
+keytool -list -v -keystore infoconv2.jks
+
+https://www.sslshopper.com/article-most-common-java-keytool-keystore-commands.html
+
+
+
+
+
+
+
+
+
